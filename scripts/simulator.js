@@ -49,10 +49,29 @@ class StatusEffect{
     }
 }
 
-function getRandomInt(max) { //random integer generator with a variable maximum
-    return Math.floor(Math.random() * max);
-}
+//Buttons and their calls
+const attackButton = document.getElementById("attackButton");
+const abilityButton = document.getElementById("abilityButton");
+const runButton = document.getElementById("runButton");
 
+
+//Button listeners
+attackButton.addEventListener("click", () => {
+  console.log("Attack clicked!");
+  performAttack(chosenEnemy, chosenCharacter);
+});
+
+abilityButton.addEventListener("click", () => {
+  console.log("Ability clicked!");
+});
+
+runButton.addEventListener("click", () => {
+  console.log("Run clicked!");
+});
+
+function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
+    return Math.random() * (max - min) + min;
+}
 
 
 //Make player (meaning stats and abilitites) Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -73,7 +92,7 @@ enemyGoblin.introduce();
 let chosenEnemy = enemyGoblin
 
 //Combat:
-function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat
+function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
     let chosenFighters = [chosenCharacter, chosenEnemy];
     const randomNumber = Math.random();
     const randomFaster = chosenFighters[Math.floor(randomNumber * chosenFighters.length)];
@@ -92,10 +111,10 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
 
 function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
     let damage = 0;
-    let rHit = getRandomInt(101);
+    let rHit = getRandomInt(0, 101);
     if (rHit > 94 + hitBuf)
         {
-            Console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
+            console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
         }
         else if (rHit < 6 + critBuf)
         {
@@ -105,12 +124,12 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             else {
                 damage = attacker.strength * 2;   
             }
-            Console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
+            console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
                 defender.name+" takes "+damage+" points of damage!");
         }
         else
         {
-            let rDamage = r.Next(lowRoll, highRoll);
+            let rDamage = getRandomInt(lowRoll, highRoll);
             if (specialDamage != 0) {
                 damage = specialDamage - defender.armor + rDamage;
             }
@@ -119,11 +138,11 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             }
             if (damage <= 0) {
                 damage = 0;
-                Console.log("\n"+attacker.name+" attacks "+defender.name+", but"+
+                console.log("\n"+attacker.name+" attacks "+defender.name+", but "+
                             defender.name+" blocked all the damage!");
             }
             else {
-            Console.log("\n"+attacker.name+" hits "+defender.name+" the "+defender.classType+" !\n"+
+            console.log("\n"+attacker.name+" hits "+defender.name+" the "+defender.classType+" !\n"+
                         defender.name+" takes "+damage+" points of damage!");            
             }
         }
