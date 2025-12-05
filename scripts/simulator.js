@@ -51,7 +51,8 @@ class StatusEffect{
 
 //Buttons and their calls
 const attackButton = document.getElementById("attackButton");
-const abilityButton = document.getElementById("abilityButton");
+const abilityButton1 = document.getElementById("abilityButton1");
+const abilityButton2 = document.getElementById("abilityButton2");
 const runButton = document.getElementById("runButton");
 
 
@@ -61,7 +62,11 @@ attackButton.addEventListener("click", () => {
   performAttack(chosenEnemy, chosenCharacter);
 });
 
-abilityButton.addEventListener("click", () => {
+abilityButton1.addEventListener("click", () => {
+  console.log("Ability clicked!");
+});
+
+abilityButton2.addEventListener("click", () => {
   console.log("Ability clicked!");
 });
 
