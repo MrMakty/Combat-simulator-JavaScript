@@ -82,7 +82,7 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
         performAttack(chosenEnemy, chosenCharacter);
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
         performAttack(chosenCharacter, chosenEnemy);
-    } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly equal, the player gets to go first
+    } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
         performAttack(chosenCharacter, chosenEnemy);
     } else {
         performAttack(randomFaster, randomSlower); //Random fighter gets chosen to act first
@@ -90,12 +90,12 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
 }
 
 
-function performAttack(firstActor, lastActor, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
+function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
     let damage = 0;
     let rHit = getRandomInt(101);
     if (rHit > 94 + hitBuf)
         {
-            Console.log("\n"+firstActor.name+" misses "+lastActor.name+" and deals no damage!");
+            Console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
         }
         else if (rHit < 6 + critBuf)
         {
@@ -103,31 +103,31 @@ function performAttack(firstActor, lastActor, specialDamage = 0, critBuf = 0, hi
                 damage = specialDamage * 2;
             }
             else {
-                damage = firstActor.strength * 2;   
+                damage = attacker.strength * 2;   
             }
-            Console.log("\n"+firstActor.name+" critically hits "+lastActor.name+" the "+lastActor.classType+" !\n"+
-                lastActor.name+" takes "+damage+" points of damage!");
+            Console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
+                defender.name+" takes "+damage+" points of damage!");
         }
         else
         {
             let rDamage = r.Next(lowRoll, highRoll);
             if (specialDamage != 0) {
-                damage = specialDamage - lastActor.armor + rDamage;
+                damage = specialDamage - defender.armor + rDamage;
             }
             else {
-                damage = firstActor.strength - lastActor.armor + rDamage;   
+                damage = attacker.strength - defender.armor + rDamage;   
             }
             if (damage <= 0) {
                 damage = 0;
-                Console.log("\n"+firstActor.name+" attacks "+lastActor.name+", but"+
-                    lastActor.name+" blocked all the damage!");
+                Console.log("\n"+attacker.name+" attacks "+defender.name+", but"+
+                            defender.name+" blocked all the damage!");
             }
             else {
-            Console.log("\n"+firstActor.name+" hits "+lastActor.name+" the "+lastActor.classType+" !\n"+
-                        lastActor.name+" takes "+damage+" points of damage!");            
+            Console.log("\n"+attacker.name+" hits "+defender.name+" the "+defender.classType+" !\n"+
+                        defender.name+" takes "+damage+" points of damage!");            
             }
         }
-        lastActor.health -= damage;
+        defender.health -= damage;
         return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got bloacked, shouldn't deal status conditions
 }
 
