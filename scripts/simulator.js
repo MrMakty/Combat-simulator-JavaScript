@@ -117,11 +117,11 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
 function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
     let damage = 0;
     let rHit = getRandomInt(0, 101);
-    if (rHit > 94 + hitBuf)
+    if (rHit > 94 + hitBuf) //Check if the attack misses
         {
             console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
         }
-        else if (rHit < 6 + critBuf)
+    else if (rHit < 6 + critBuf) //Checks to see if the attack is a crit
         {
             if (specialDamage != 0) {
                 damage = specialDamage * 2;
@@ -132,7 +132,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
                 defender.name+" takes "+damage+" points of damage!");
         }
-        else
+    else //if not a miss or a crit this code runs
         {
             let rDamage = getRandomInt(lowRoll, highRoll);
             if (specialDamage != 0) {
