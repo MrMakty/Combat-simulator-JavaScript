@@ -59,7 +59,7 @@ const runButton = document.getElementById("runButton");
 //Button listeners
 attackButton.addEventListener("click", () => {
   console.log("Attack clicked!");
-  performAttack(chosenEnemy, chosenCharacter);
+  firstAttacker(chosenEnemy, chosenCharacter);
 });
 
 abilityButton1.addEventListener("click", () => {
