@@ -94,13 +94,17 @@ enemyGoblin.introduce();
 let chosenEnemy = enemyGoblin
 
 //Constant healthbars (WIP)
-let playerHealth = chosenCharacter.health;
-const playerHealthInfo = document.getElementById("playerHealth");
-playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
+function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
+    chosenCharacter.health -= playerDamage;
+    const playerHealthInfo = document.getElementById("playerHealth");
+    playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
+    
+    chosenEnemy.health -= enemyDamage;
+    const enemyHealthInfo = document.getElementById("enemyHealth");
+    enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
+}
 
-let enemyHealth = chosenEnemy.health;
-const enemyHealthInfo = document.getElementById("enemyHealth");
-enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
+healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
 
 //Combat:
 function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
@@ -108,19 +112,22 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
     const randomNumber = Math.random();
     const randomFaster = chosenFighters[Math.floor(randomNumber * chosenFighters.length)];
     const randomSlower = chosenFighters[Math.floor(1-randomNumber * chosenFighters.length)];
+    let playerDamage = 0
+    let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
-        performAttack(chosenEnemy, chosenCharacter);
-        performAttack(chosenCharacter, chosenEnemy);
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
-        performAttack(chosenCharacter, chosenEnemy);
-        performAttack(chosenEnemy, chosenCharacter);
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
     } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
-        performAttack(chosenCharacter, chosenEnemy);
-        performAttack(chosenEnemy, chosenCharacter);
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
     } else { //Player gets to go first in unforseen circumstances
-        performAttack(chosenCharacter, chosenEnemy);
-        performAttack(chosenEnemy, chosenCharacter);
+        playerDamage = performAttack(chosenCharacter, chosenEnemy);
+        enemyDamage = performAttack(chosenEnemy, chosenCharacter);
     }
+    healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
 }
 
 
@@ -161,8 +168,13 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
                         defender.name+" takes "+damage+" points of damage!");            
             }
         }
-        defender.health -= damage;
+    if (damage > 0){
         return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got bloacked, shouldn't deal status conditions
+    }
+    else
+    {
+        return 0
+    }
 }
 
 
