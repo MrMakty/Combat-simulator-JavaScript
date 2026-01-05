@@ -104,10 +104,13 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
     const randomSlower = chosenFighters[Math.floor(1-randomNumber * chosenFighters.length)];
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
         performAttack(chosenEnemy, chosenCharacter);
+        performAttack(chosenCharacter, chosenEnemy);
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
         performAttack(chosenCharacter, chosenEnemy);
+        performAttack(chosenEnemy, chosenCharacter);
     } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
         performAttack(chosenCharacter, chosenEnemy);
+        performAttack(chosenEnemy, chosenCharacter);
     } else {
         performAttack(randomFaster, randomSlower); //Random fighter gets chosen to act first
     }
