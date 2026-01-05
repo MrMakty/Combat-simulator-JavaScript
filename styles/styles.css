@@ -13,3 +13,9 @@ html {
   position: absolute;
   z-index: -5;
 }
+
+.healthbar {
+  background: red;
+  padding-left: 2%;
+  padding-right: 2%;
+}
