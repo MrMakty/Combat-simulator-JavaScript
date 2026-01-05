@@ -175,6 +175,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 //Second attack (with damage roll)
 //Ability
 //Repeat attacks untill either character or enemie dies
+//Status effects
 
 //After combat
 //Rewards (SHOULD)
