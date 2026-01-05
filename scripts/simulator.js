@@ -112,8 +112,8 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
         performAttack(chosenCharacter, chosenEnemy);
         performAttack(chosenEnemy, chosenCharacter);
     } else { //Random fighter gets chosen to act first
-        performAttack(randomFaster, randomSlower); 
-        performAttack(randomSlower, randomFaster); 
+        performAttack(chosenCharacter, chosenEnemy);
+        performAttack(chosenEnemy, chosenCharacter);
     }
 }
 
