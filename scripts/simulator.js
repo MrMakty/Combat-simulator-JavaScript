@@ -80,7 +80,7 @@ function getRandomInt(min, max) { //random integer generator with a variable max
 
 
 //Make player (meaning stats and abilitites) Player will be able to choose by clicking on a character but for now only 1 possible character to play with
-let playerWarrior = new Character("Matthieu", "warrior", 150, 150, 20, 20, 3, "slash", "brace_shield")
+let playerWarrior = new Character("Matthieu", "warrior", 150, 150, 15, 20, 3, "slash", "brace_shield")
 playerWarrior.introduce();
 let playerMage = new Character("Arkon", "mage", 50, 50, 5, 60, 6, "fireball", "mage_armor")
 playerMage.introduce();
@@ -134,7 +134,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
         }
     else //if not a miss or a crit this code runs
         {
-            let rDamage = getRandomInt(lowRoll, highRoll);
+            let rDamage = Math.floor(getRandomInt(lowRoll, highRoll));
             if (specialDamage != 0) {
                 damage = specialDamage - defender.armor + rDamage;
             }
