@@ -156,21 +156,29 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 }
 
 
-
-//Higher speed goes first (If easy to implement)
-
-//First attack (with damage roll)
-
-//Second attack (with damage roll)
-
-//Repeat attacks untill either character or enemie dies
-
-//Choose next enemy if you won. Otherwise, make new character
-
-
 //Variables needed:
 //Player: Name, Type[Health, MaxHealth, Armor, Strength, Speed, Ability1, Ability2]
 //Enemy: Name, Type[Health, MaxHealth, Armor, Strength, Speed, Ability1, Ability2]
 //Attack: PlayerInfo, EnemyInfo, Will be done with random and set of posibilities (DamageRoll, HitChance, CritChance) 
+
+//Character and character choosing:
+//Characters introduse themself on hover (SHOULD)
+//Images for characters and enemies (MUST)
+
+//Combat: (MUST)
+//Higher speed goes first
+//First attack (with damage roll)
+//Second attack (with damage roll)
+//Ability
+//Repeat attacks untill either character or enemie dies
+
+//After combat
+//Rewards (SHOULD)
+//Choose next enemy if you won. Make new character if character died (MUST)
+
+//Maybe implement: (WOULD)
+//Items
+//Money
+//Locations
 
 console.log("Project is done running!");
