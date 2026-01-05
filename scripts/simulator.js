@@ -111,8 +111,9 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
     } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
         performAttack(chosenCharacter, chosenEnemy);
         performAttack(chosenEnemy, chosenCharacter);
-    } else {
-        performAttack(randomFaster, randomSlower); //Random fighter gets chosen to act first
+    } else { //Random fighter gets chosen to act first
+        performAttack(randomFaster, randomSlower); 
+        performAttack(randomSlower, randomFaster); 
     }
 }
 
