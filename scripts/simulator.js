@@ -181,4 +181,4 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 //Money
 //Locations
 
-console.log("Project is done running!");
+console.log("Project is done introducing and setting up code!");
