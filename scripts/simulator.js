@@ -93,7 +93,7 @@ enemyGoblin.introduce();
 
 let chosenEnemy = enemyGoblin
 
-//Constant healthbars (WIP)
+//Constant healthbars
 function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
     chosenCharacter.health -= playerDamage;
     const playerHealthInfo = document.getElementById("playerHealth");
@@ -108,10 +108,6 @@ healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
 
 //Combat:
 function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
-    let chosenFighters = [chosenCharacter, chosenEnemy];
-    const randomNumber = Math.random();
-    const randomFaster = chosenFighters[Math.floor(randomNumber * chosenFighters.length)];
-    const randomSlower = chosenFighters[Math.floor(1-randomNumber * chosenFighters.length)];
     let playerDamage = 0
     let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
@@ -120,10 +116,7 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
-    } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
-        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
-        playerDamage = performAttack(chosenEnemy, chosenCharacter);
-    } else { //Player gets to go first in unforseen circumstances
+    } else { //Player gets to go first in unforseen circumstances or if speed is equal
         playerDamage = performAttack(chosenCharacter, chosenEnemy);
         enemyDamage = performAttack(chosenEnemy, chosenCharacter);
     }
