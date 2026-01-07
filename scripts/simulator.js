@@ -93,6 +93,8 @@ enemyGoblin.introduce();
 
 let chosenEnemy = enemyGoblin
 
+
+
 //Constant healthbars
 function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
     chosenCharacter.health -= playerDamage;
@@ -186,13 +188,16 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 //Higher speed goes first
 //First attack (with damage roll)
 //Second attack (with damage roll)
-//Ability
+//Ability (for both)
+//  Cooldown
+//  Effect
+//Possibility to try and run from enemy
 //Repeat attacks untill either character or enemie dies
-//Status effects
+//Status effect calculation
 
 //After combat
 //Rewards (SHOULD)
-//Choose next enemy if you won. Make new character if character died (MUST)
+//Choose next enemy if you won or make new character if character died (MUST)
 
 //Maybe implement: (WOULD)
 //Items
