@@ -57,22 +57,22 @@ const runButton = document.getElementById("runButton");
 
 
 //Button listeners
-attackButton.addEventListener("click", () => {
-  console.log("Attack clicked!");
-  characterAttacks(chosenCharacter, chosenEnemy);
-});
+// attackButton.addEventListener("click", () => {
+//   console.log("Attack clicked!");
+//   characterAttacks(chosenCharacter, chosenEnemy);
+// });
 
-abilityButton1.addEventListener("click", () => {
-  console.log("Ability clicked!");
-});
+// abilityButton1.addEventListener("click", () => {
+//   console.log("Ability clicked!");
+// });
 
-abilityButton2.addEventListener("click", () => {
-  console.log("Ability clicked!");
-});
+// abilityButton2.addEventListener("click", () => {
+//   console.log("Ability clicked!");
+// });
 
-runButton.addEventListener("click", () => {
-  console.log("Run clicked!");
-});
+// runButton.addEventListener("click", () => {
+//   console.log("Run clicked!");
+// });
 
 function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
     return Math.random() * (max - min) + min;
@@ -83,18 +83,36 @@ let chosenCharacter = null;
 
 function selectCharacter(character) {
     chosenCharacter = character;
+    UIUpdater(chosenCharacter);    
     console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
-    UIUpdater();    
 }
 
-function UIUpdater() {
+function UIUpdater(chosenCharacter) {
+
+
     if (!chosenCharacter) return;
+
+
 
     //Hide character display
 
     //Display background and message that enemy has appeared
 
     //Display enemy, player character, healthbars, menu
+}
+
+function backgroundDisplayer(currentState){
+    let currentBackground = document.createElement('img');
+    currentBackground.setAttribute("src", "styles/assets/backgrounds/" + currentState + ".jpg")
+    currentBackground.setAttribute("id", currentState);
+    currentBackground.setAttribute("class", "background");
+    console.log("background created");
+    document.getElementsByClassName("backgroundLocation")[0].appendChild(currentBackground);
+}
+
+function backgroundRemover(formerState){
+    let elementToRemove = document.getElementById(formerState);
+    elementToRemove.remove();
 }
 
 //Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -104,6 +122,7 @@ let playerArcher = new Character("Makty", "archer", 100, 100, 15, 30, 9, "precis
 let characterList = [playerArcher, playerMage, playerWarrior]
 
 function characterSelector(characterList){ //This variable will be removed and a json file with the characters will be implemented in this function instead
+    backgroundDisplayer("characterSelection");
     characterList.forEach(character => {
         let characterButton = document.createElement('button');
         characterButton.setAttribute("id", character.classType);
@@ -114,6 +133,7 @@ function characterSelector(characterList){ //This variable will be removed and a
         characterButton.innerHTML = character.name;
         document.getElementsByClassName("characterSelection")[0].appendChild(characterButton);
     });
+    backgroundRemover("characterSelection")
 }
 
 characterSelector(characterList)
