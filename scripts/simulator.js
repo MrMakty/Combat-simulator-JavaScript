@@ -78,8 +78,26 @@ function getRandomInt(min, max) { //random integer generator with a variable max
     return Math.random() * (max - min) + min;
 }
 
+// Global variables
+let chosenCharacter = null;
 
-//Make player (meaning stats and abilitites) Player will be able to choose by clicking on a character but for now only 1 possible character to play with
+function selectCharacter(character) {
+    chosenCharacter = character;
+    console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
+    UIUpdater();    
+}
+
+function UIUpdater() {
+    if (!chosenCharacter) return;
+
+    //Hide character display
+
+    //Display background and message that enemy has appeared
+
+    //Display enemy, player character, healthbars, menu
+}
+
+//Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
 let playerWarrior = new Character("Matthieu", "warrior", 150, 150, 15, 20, 3, "slash", "brace_shield")
 let playerMage = new Character("Arkon", "mage", 50, 50, 5, 60, 6, "fireball", "mage_armor")
 let playerArcher = new Character("Makty", "archer", 100, 100, 15, 30, 9, "precision_shot", "healing_salve")
@@ -88,13 +106,17 @@ let characterList = [playerArcher, playerMage, playerWarrior]
 function characterSelector(characterList){ //This variable will be removed and a json file with the characters will be implemented in this function instead
     characterList.forEach(character => {
         let characterButton = document.createElement('button');
+        characterButton.setAttribute("id", character.classType);
+        characterButton.setAttribute("class", "characterButton");
+        characterButton.addEventListener("click", () => {
+            selectCharacter(character)
+        });
         characterButton.innerHTML = character.name;
         document.getElementsByClassName("characterSelection")[0].appendChild(characterButton);
     });
-
 }
 
-let chosenCharacter = characterSelector(characterList)
+characterSelector(characterList)
 
 //Make enemy (meaning stats and abilitites) For now only one enemy possible
 let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
@@ -117,7 +139,7 @@ function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDam
     console.log("enemy health printed")
 }
 
-healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
+// healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
 
 //Combat:
 function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
