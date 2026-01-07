@@ -59,7 +59,7 @@ const runButton = document.getElementById("runButton");
 //Button listeners
 attackButton.addEventListener("click", () => {
   console.log("Attack clicked!");
-  firstAttacker(chosenEnemy, chosenCharacter);
+  firstAttacker(chosenCharacter, chosenEnemy);
 });
 
 abilityButton1.addEventListener("click", () => {
@@ -98,10 +98,12 @@ function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDam
     chosenCharacter.health -= playerDamage;
     const playerHealthInfo = document.getElementById("playerHealth");
     playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
+    console.log("player health printed")
     
     chosenEnemy.health -= enemyDamage;
     const enemyHealthInfo = document.getElementById("enemyHealth");
     enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
+    console.log("enemy health printed")
 }
 
 healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
