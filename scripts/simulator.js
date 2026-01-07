@@ -59,7 +59,7 @@ const runButton = document.getElementById("runButton");
 //Button listeners
 attackButton.addEventListener("click", () => {
   console.log("Attack clicked!");
-  firstAttacker(chosenCharacter, chosenEnemy);
+  characterAttacks(chosenCharacter, chosenEnemy);
 });
 
 abilityButton1.addEventListener("click", () => {
@@ -120,7 +120,7 @@ function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDam
 healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
 
 //Combat:
-function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
+function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
     let playerDamage = 0
     let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
