@@ -91,7 +91,7 @@ playerArcher.introduce();
 let chosenCharacter = playerWarrior;
 
 //Make enemy (meaning stats and abilitites) For now only one enemy possible
-let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
+let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 25, 6, "mud_throw", "enemy_brace_shield")
 enemyGoblin.introduce();
 
 let chosenEnemy = enemyGoblin
@@ -114,14 +114,14 @@ function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act fir
 }
 
 
-function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
+function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 5) {
     let damage = 0;
-    let rHit = getRandomInt(0, 101);
-    if (rHit > 94 + hitBuf)
+    let rHit = Math.round(getRandomInt(0, 101));
+    if (rHit > 94 + hitBuf) //attack missed
         {
             console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
         }
-        else if (rHit < 6 + critBuf)
+        else if (rHit < 6 + critBuf) //critical hit deals dubble damage
         {
             if (specialDamage != 0) {
                 damage = specialDamage * 2;
@@ -134,7 +134,8 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
         }
         else
         {
-            let rDamage = getRandomInt(lowRoll, highRoll);
+            let rDamage =  Math.round(getRandomInt(lowRoll, highRoll));
+            console.log(rDamage);
             if (specialDamage != 0) {
                 damage = specialDamage - defender.armor + rDamage;
             }
@@ -152,6 +153,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             }
         }
         defender.health -= damage;
+        console.log(defender.name+" now has "+defender.health+" left")
         return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got bloacked, shouldn't deal status conditions
 }
 
