@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="styles/styles.css" />
   </head>
   <body>
-    <img src="styles/assets/Background.jpg" class="background" />
-    <div class="menu_buttons">
-      <button id="attackButton">Attack</button>
-      <button id="abilityButton1">Ability1 (placeholder)</button>
-      <button id="abilityButton2">Ability2 (placeholder)</button>
-      <!--I will make these buttons dynamic later-->
-      <button id="runButton">Run!</button>
+    <div class="backgroundLocation"></div>
+    <div class="characterSelection"></div>
+    <div class="combatRelated">
+      This part will only be displayed when the player is in combat
+      <div class="menu_buttons">
+        <button id="attackButton">Attack</button>
+        <button id="abilityButton1">Ability1 (placeholder)</button>
+        <button id="abilityButton2">Ability2 (placeholder)</button>
+        <button id="runButton">Run!</button>
+      </div>
+      <data id="playerHealth" class="healthbar">Waiting for JS...</data>
+      <data id="enemyHealth" class="healthbar">Waiting for JS...</data>
     </div>
     <script src="scripts/simulator.js"></script>
   </body>

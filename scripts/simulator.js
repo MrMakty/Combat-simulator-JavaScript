@@ -57,71 +57,138 @@ const runButton = document.getElementById("runButton");
 
 
 //Button listeners
-attackButton.addEventListener("click", () => {
-  console.log("Attack clicked!");
-  performAttack(chosenEnemy, chosenCharacter);
-});
+// attackButton.addEventListener("click", () => {
+//   console.log("Attack clicked!");
+//   characterAttacks(chosenCharacter, chosenEnemy);
+// });
 
-abilityButton1.addEventListener("click", () => {
-  console.log("Ability clicked!");
-});
+// abilityButton1.addEventListener("click", () => {
+//   console.log("Ability clicked!");
+// });
 
-abilityButton2.addEventListener("click", () => {
-  console.log("Ability clicked!");
-});
+// abilityButton2.addEventListener("click", () => {
+//   console.log("Ability clicked!");
+// });
 
-runButton.addEventListener("click", () => {
-  console.log("Run clicked!");
-});
+// runButton.addEventListener("click", () => {
+//   console.log("Run clicked!");
+// });
 
 function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
     return Math.random() * (max - min) + min;
 }
 
+// Global variables
+let chosenCharacter = null;
 
-//Make player (meaning stats and abilitites) Player will be able to choose by clicking on a character but for now only 1 possible character to play with
-let playerWarrior = new Character("Matthieu", "warrior", 150, 150, 20, 20, 3, "slash", "brace_shield")
-playerWarrior.introduce();
+function selectCharacter(character) {
+    chosenCharacter = character;
+    UIUpdater(chosenCharacter);    
+    console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
+}
+
+function UIUpdater(chosenCharacter) {
+
+
+    if (!chosenCharacter) return;
+
+
+
+    //Hide character display
+
+    //Display background and message that enemy has appeared
+
+    //Display enemy, player character, healthbars, menu
+}
+
+function backgroundDisplayer(currentState){
+    let currentBackground = document.createElement('img');
+    currentBackground.setAttribute("src", "styles/assets/backgrounds/" + currentState + ".jpg")
+    currentBackground.setAttribute("id", currentState);
+    currentBackground.setAttribute("class", "background");
+    currentBackground.setAttribute("alt", "Afbeelding niet gevonden")
+    console.log("background created");
+    document.getElementsByClassName("backgroundLocation")[0].appendChild(currentBackground);
+}
+
+function backgroundRemover(formerState){
+    let elementToRemove = document.getElementById(formerState);
+    elementToRemove.remove();
+    console.log("Background has been deleted")
+}
+
+//Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
+let playerWarrior = new Character("Matthieu", "warrior", 150, 150, 15, 20, 3, "slash", "brace_shield")
 let playerMage = new Character("Arkon", "mage", 50, 50, 5, 60, 6, "fireball", "mage_armor")
-playerMage.introduce();
 let playerArcher = new Character("Makty", "archer", 100, 100, 15, 30, 9, "precision_shot", "healing_salve")
-playerArcher.introduce();
+let characterList = [playerArcher, playerMage, playerWarrior]
 
+function characterSelector(characterList){ //This variable will be removed and a json file with the characters will be implemented in this function instead
+    backgroundDisplayer("characterSelection");
+    characterList.forEach(character => {
+        let characterButton = document.createElement('button');
+        characterButton.setAttribute("id", character.classType);
+        characterButton.setAttribute("class", "characterButton");
+        characterButton.addEventListener("click", () => {
+            selectCharacter(character)
+        });
+        characterButton.innerHTML = character.name;
+        document.getElementsByClassName("characterSelection")[0].appendChild(characterButton);
+    });
+    // backgroundRemover("characterSelection")
+}
 
-let chosenCharacter = playerWarrior;
+characterSelector(characterList)
 
 //Make enemy (meaning stats and abilitites) For now only one enemy possible
-let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 25, 6, "mud_throw", "enemy_brace_shield")
+let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
 enemyGoblin.introduce();
 
 let chosenEnemy = enemyGoblin
 
+
+
+//Constant healthbars
+function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
+    chosenCharacter.health -= playerDamage;
+    const playerHealthInfo = document.getElementById("playerHealth");
+    playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
+    console.log("player health printed")
+    
+    chosenEnemy.health -= enemyDamage;
+    const enemyHealthInfo = document.getElementById("enemyHealth");
+    enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
+    console.log("enemy health printed")
+}
+
+// healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
+
 //Combat:
-function firstAttacker(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
-    let chosenFighters = [chosenCharacter, chosenEnemy];
-    const randomNumber = Math.random();
-    const randomFaster = chosenFighters[Math.floor(randomNumber * chosenFighters.length)];
-    const randomSlower = chosenFighters[Math.floor(1-randomNumber * chosenFighters.length)];
+function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
+    let playerDamage = 0
+    let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
-        performAttack(chosenEnemy, chosenCharacter);
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
-        performAttack(chosenCharacter, chosenEnemy);
-    } else if (randomFaster === randomSlower){ //If the variable randomNumber ever is exactly 0.5, the player gets to go first
-        performAttack(chosenCharacter, chosenEnemy);
-    } else {
-        performAttack(randomFaster, randomSlower); //Random fighter gets chosen to act first
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
+    } else { //Player gets to go first in unforseen circumstances or if speed is equal
+        playerDamage = performAttack(chosenCharacter, chosenEnemy);
+        enemyDamage = performAttack(chosenEnemy, chosenCharacter);
     }
+    healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
 }
 
 
-function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 5) {
+function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
     let damage = 0;
-    let rHit = Math.round(getRandomInt(0, 101));
-    if (rHit > 94 + hitBuf) //attack missed
+    let rHit = getRandomInt(0, 101);
+    if (rHit > 94 + hitBuf) //Check if the attack misses
         {
             console.log("\n"+attacker.name+" misses "+defender.name+" and deals no damage!");
         }
-        else if (rHit < 6 + critBuf) //critical hit deals dubble damage
+    else if (rHit < 6 + critBuf) //Checks to see if the attack is a crit
         {
             if (specialDamage != 0) {
                 damage = specialDamage * 2;
@@ -132,10 +199,9 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
                 defender.name+" takes "+damage+" points of damage!");
         }
-        else
+    else //if not a miss or a crit this code runs
         {
-            let rDamage =  Math.round(getRandomInt(lowRoll, highRoll));
-            console.log(rDamage);
+            let rDamage = Math.floor(getRandomInt(lowRoll, highRoll));
             if (specialDamage != 0) {
                 damage = specialDamage - defender.armor + rDamage;
             }
@@ -152,22 +218,14 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
                         defender.name+" takes "+damage+" points of damage!");            
             }
         }
-        defender.health -= damage;
-        console.log(defender.name+" now has "+defender.health+" left")
+    if (damage > 0){
         return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got bloacked, shouldn't deal status conditions
+    }
+    else
+    {
+        return 0
+    }
 }
-
-
-
-//Higher speed goes first (If easy to implement)
-
-//First attack (with damage roll)
-
-//Second attack (with damage roll)
-
-//Repeat attacks untill either character or enemie dies
-
-//Choose next enemy if you won. Otherwise, make new character
 
 
 //Variables needed:
@@ -175,4 +233,28 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 //Enemy: Name, Type[Health, MaxHealth, Armor, Strength, Speed, Ability1, Ability2]
 //Attack: PlayerInfo, EnemyInfo, Will be done with random and set of posibilities (DamageRoll, HitChance, CritChance) 
 
-console.log("Project is done running!");
+//Character and character choosing:
+//Characters introduce themself on hover (SHOULD)
+//Images for characters and enemies (MUST)
+
+//Combat: (MUST)
+//Higher speed goes first
+//First attack (with damage roll)
+//Second attack (with damage roll)
+//Ability (for both)
+//  Cooldown
+//  Effect
+//Possibility to try and run from enemy
+//Repeat attacks untill either character or enemie dies
+//Status effect calculation
+
+//After combat
+//Rewards (SHOULD)
+//Choose next enemy if you won or make new character if character died (MUST)
+
+//Maybe implement: (WOULD)
+//Items
+//Money
+//Locations
+
+console.log("Project is done introducing and setting up code!");
