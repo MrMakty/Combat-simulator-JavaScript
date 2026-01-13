@@ -125,17 +125,28 @@ let characterList = [playerArcher, playerMage, playerWarrior]
 
 function characterSelector(characterList){ //This variable will be removed and a json file with the characters will be implemented in this function instead
     backgroundDisplayer("characterSelection");
+    selectCharacter(playerWarrior) //Maybe change this to a villager so you get a weak character if you didn't select a character correctly
     characterList.forEach(character => {
         let characterButton = document.createElement('button');
         characterButton.setAttribute("id", character.classType);
         characterButton.setAttribute("class", "characterButton");
         characterButton.addEventListener("click", () => {
             selectCharacter(character)
+            character.introduce();
         });
         characterButton.innerHTML = character.name;
         document.getElementsByClassName("characterSelection")[0].appendChild(characterButton);
     });
-    // backgroundRemover("characterSelection")
+    let confirmButton = document.createElement('button');
+    confirmButton.setAttribute("id", "confirmation");
+    confirmButton.setAttribute("class", "confirmButton")
+    confirmButton.addEventListener("click", () => {
+        
+        backgroundDisplayer("combat");
+        backgroundRemover("characterSelection");
+    })
+    confirmButton.innerHTML = "CONFIRM";
+    document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
 }
 
 characterSelector(characterList)
