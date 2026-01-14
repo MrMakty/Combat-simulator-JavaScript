@@ -82,23 +82,8 @@ function getRandomInt(min, max) { //random integer generator with a variable max
 let chosenCharacter = null;
 
 function selectCharacter(character) {
-    chosenCharacter = character;
-    UIUpdater(chosenCharacter);    
+    chosenCharacter = character; 
     console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
-}
-
-function UIUpdater(chosenCharacter) {
-
-
-    if (!chosenCharacter) return;
-
-
-
-    //Hide character display
-
-    //Display background and message that enemy has appeared
-
-    //Display enemy, player character, healthbars, menu
 }
 
 function backgroundStarter(newState){
@@ -111,11 +96,23 @@ function backgroundStarter(newState){
     console.log("New background has been created");
 }
 
+function buttonStarter(newState){
+
+}
+
 function backgroundSwapper(formerState, newState){
     backgroundStarter(newState)
-    let elementToRemove = document.getElementById(formerState);
-    elementToRemove.remove();
+    let backgroundToRemove = document.getElementById(formerState);
+    backgroundToRemove.remove();
     console.log("Former background has been deleted")
+}
+
+function buttonChanger(formerState, newState){
+    let buttonToRemove = document.getElementById(formerState);
+    while (buttonToRemove.lastChild){
+        buttonToRemove.removeChild(buttonToRemove.lastChild);
+    }
+    console.log("All buttons about " + formerState + " have been removed")
 }
 
 //Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -130,7 +127,7 @@ function characterSelector(characterList){ //This variable will be removed and a
     characterList.forEach(character => {
         let characterButton = document.createElement('button');
         characterButton.setAttribute("id", character.classType);
-        characterButton.setAttribute("class", "characterButton");
+        characterButton.setAttribute("class", "characterSelection");
         characterButton.addEventListener("click", () => {
             selectCharacter(character)
             character.introduce();
@@ -143,6 +140,8 @@ function characterSelector(characterList){ //This variable will be removed and a
     confirmButton.setAttribute("class", "confirmButton")
     confirmButton.addEventListener("click", () => {
         backgroundSwapper("characterSelection", "combat");
+        buttonChanger("characterSelection", "combat");
+        combatHandler(chosenCharacter);
     })
     confirmButton.innerHTML = "CONFIRM";
     document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
@@ -150,13 +149,12 @@ function characterSelector(characterList){ //This variable will be removed and a
 
 characterSelector(characterList)
 
-//Make enemy (meaning stats and abilitites) For now only one enemy possible
-let enemyGoblin = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
-enemyGoblin.introduce();
-
-let chosenEnemy = enemyGoblin
-
-
+function combatHandler(chosenCharacter){
+    let chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
+    chosenEnemy.introduce();
+    healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
+    characterAttacks(chosenCharacter, chosenEnemy)
+}
 
 //Constant healthbars
 function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
