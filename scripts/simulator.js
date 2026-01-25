@@ -114,8 +114,9 @@ function buttonStarter(newState){
     confirmButton.setAttribute("id", "confirmation");
     confirmButton.setAttribute("class", "confirmButton")
     confirmButton.addEventListener("click", () => {
+        buttonRemover("characterSelection");
         backgroundChanger("characterSelection", "combat");
-        buttonChanger("characterSelection", "combat");
+        combatSetup();
         combatHandler(chosenCharacter);
     });
     confirmButton.innerHTML = "CONFIRM";
@@ -129,12 +130,12 @@ function backgroundChanger(formerState, newState){
     console.log("Former background has been deleted")
 }
 
-function buttonChanger(formerState, newState){
+function buttonRemover(formerState){
     let buttonToRemove = document.getElementById(formerState);
     while (buttonToRemove.lastChild){
         buttonToRemove.removeChild(buttonToRemove.lastChild);
     }
-    console.log("All buttons about " + formerState + " have been removed")
+    console.log("All buttons about " + formerState + " should be removed")
 }
 
 //Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -146,10 +147,44 @@ let characterList = [playerArcher, playerMage, playerWarrior]
 function characterSelector(){ //This variable will be removed and a json file with the characters will be implemented in this function instead
     backgroundStarter("characterSelection");
     buttonStarter("characterSelection");
-    
 }
 
 characterSelector(characterList)
+
+
+function combatSetup(){
+    let attackButton = document.createElement('button');
+    attackButton.setAttribute("id", "attack");
+    attackButton.setAttribute("class", "attackButton")
+    attackButton.addEventListener("click", () => {
+    });
+    attackButton.innerHTML = "ATTACK";
+    document.getElementsByClassName("combatButtons")[0].appendChild(attackButton);   
+
+    let abilityButton1 = document.createElement('button');
+    abilityButton1.setAttribute("id", "ability1");
+    abilityButton1.setAttribute("class", "abilityButton")
+    abilityButton1.addEventListener("click", () => {
+    });
+    abilityButton1.innerHTML = chosenCharacter.ability1Id;
+    document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton1);
+
+    let abilityButton2 = document.createElement('button');
+    abilityButton2.setAttribute("id", "ability2");
+    abilityButton2.setAttribute("class", "abilityButton")
+    abilityButton2.addEventListener("click", () => {
+    });
+    abilityButton2.innerHTML = chosenCharacter.ability2Id;
+    document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton2);
+
+    let runButton = document.createElement('button');
+    runButton.setAttribute("id", "attack");
+    runButton.setAttribute("class", "runButton")
+    runButton.addEventListener("click", () => {
+    });
+    runButton.innerHTML = "RUN!";
+    document.getElementsByClassName("combatButtons")[0].appendChild(runButton);
+}
 
 function combatHandler(chosenCharacter){
     let chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
