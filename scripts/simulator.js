@@ -162,6 +162,7 @@ function combatSetup(){
     attackButton.setAttribute("id", "attack");
     attackButton.setAttribute("class", "attackButton")
     attackButton.addEventListener("click", () => {
+        characterAttacks(chosenCharacter, chosenEnemy)
     });
     attackButton.innerHTML = "ATTACK";
     document.getElementsByClassName("combatButtons")[0].appendChild(attackButton);   
@@ -205,7 +206,6 @@ function combatSetup(){
 
 function combatHandler(chosenCharacter){
     healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
-    characterAttacks(chosenCharacter, chosenEnemy)
 }
 
 //Constant healthbars
