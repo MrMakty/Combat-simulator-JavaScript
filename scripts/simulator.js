@@ -124,7 +124,7 @@ function buttonStarter(newState){
 
 function backgroundChanger(formerState, newState){
     backgroundStarter(newState)
-    let backgroundToRemove = document.getElementById(formerState);
+    let backgroundToRemove = document.getElementsByClassName(formerState)[0];
     backgroundToRemove.remove();
     console.log("Former background has been deleted")
 }
