@@ -80,6 +80,7 @@ function getRandomInt(min, max) { //random integer generator with a variable max
 
 // Global variables
 let chosenCharacter = null;
+let chosenEnemy = null;
 
 function selectCharacter(character) {
     chosenCharacter = character; 
@@ -153,6 +154,10 @@ characterSelector(characterList)
 
 
 function combatSetup(){
+    // Random selection of enemy goed here
+    chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
+    chosenEnemy.introduce();
+
     let attackButton = document.createElement('button');
     attackButton.setAttribute("id", "attack");
     attackButton.setAttribute("class", "attackButton")
@@ -184,11 +189,21 @@ function combatSetup(){
     });
     runButton.innerHTML = "RUN!";
     document.getElementsByClassName("combatButtons")[0].appendChild(runButton);
+
+    let healthbarPlayer = document.createElement('data');
+    healthbarPlayer.setAttribute("id", "playerHealth");
+    healthbarPlayer.setAttribute("class", "healthbar");
+    healthbarPlayer.innerHTML = chosenCharacter.health +"/"+ chosenCharacter.maxHealth;
+    document.getElementsByClassName("healthbars")[0].appendChild(healthbarPlayer);
+
+    let healthbarEnemy = document.createElement('data');
+    healthbarEnemy.setAttribute("id", "enemyHealth");
+    healthbarEnemy.setAttribute("class", "healthbar");
+    healthbarEnemy.innerHTML = chosenEnemy.health +"/"+ chosenEnemy.maxHealth;
+    document.getElementsByClassName("healthbars")[0].appendChild(healthbarEnemy);
 }
 
 function combatHandler(chosenCharacter){
-    let chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
-    chosenEnemy.introduce();
     healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
     characterAttacks(chosenCharacter, chosenEnemy)
 }
