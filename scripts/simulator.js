@@ -97,10 +97,33 @@ function backgroundStarter(newState){
 }
 
 function buttonStarter(newState){
+    selectCharacter(playerWarrior) //Maybe change this to a villager so you get a weak character if you didn't select a character correctly
+    characterList.forEach(character => {
+        let characterButton = document.createElement('button');
+        characterButton.setAttribute("id", character.classType);
+        characterButton.setAttribute("class", newState);
+        characterButton.addEventListener("click", () => {
+            selectCharacter(character)
+            character.introduce();
+        });
+        characterButton.innerHTML = character.name;
+        document.getElementsByClassName(newState)[0].appendChild(characterButton);
+        
+    });
 
+    let confirmButton = document.createElement('button');
+    confirmButton.setAttribute("id", "confirmation");
+    confirmButton.setAttribute("class", "confirmButton")
+    confirmButton.addEventListener("click", () => {
+        backgroundChanger("characterSelection", "combat");
+        buttonChanger("characterSelection", "combat");
+        combatHandler(chosenCharacter);
+    });
+    confirmButton.innerHTML = "CONFIRM";
+    document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
 }
 
-function backgroundSwapper(formerState, newState){
+function backgroundChanger(formerState, newState){
     backgroundStarter(newState)
     let backgroundToRemove = document.getElementById(formerState);
     backgroundToRemove.remove();
@@ -121,30 +144,10 @@ let playerMage = new Character("Arkon", "mage", 50, 50, 5, 60, 6, "fireball", "m
 let playerArcher = new Character("Makty", "archer", 100, 100, 15, 30, 9, "precision_shot", "healing_salve")
 let characterList = [playerArcher, playerMage, playerWarrior]
 
-function characterSelector(characterList){ //This variable will be removed and a json file with the characters will be implemented in this function instead
+function characterSelector(){ //This variable will be removed and a json file with the characters will be implemented in this function instead
     backgroundStarter("characterSelection");
-    selectCharacter(playerWarrior) //Maybe change this to a villager so you get a weak character if you didn't select a character correctly
-    characterList.forEach(character => {
-        let characterButton = document.createElement('button');
-        characterButton.setAttribute("id", character.classType);
-        characterButton.setAttribute("class", "characterSelection");
-        characterButton.addEventListener("click", () => {
-            selectCharacter(character)
-            character.introduce();
-        });
-        characterButton.innerHTML = character.name;
-        document.getElementsByClassName("characterSelection")[0].appendChild(characterButton);
-    });
-    let confirmButton = document.createElement('button');
-    confirmButton.setAttribute("id", "confirmation");
-    confirmButton.setAttribute("class", "confirmButton")
-    confirmButton.addEventListener("click", () => {
-        backgroundSwapper("characterSelection", "combat");
-        buttonChanger("characterSelection", "combat");
-        combatHandler(chosenCharacter);
-    })
-    confirmButton.innerHTML = "CONFIRM";
-    document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
+    buttonStarter("characterSelection");
+    
 }
 
 characterSelector(characterList)
