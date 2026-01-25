@@ -115,7 +115,7 @@ function buttonStarter(newState){
     confirmButton.setAttribute("id", "confirmation");
     confirmButton.setAttribute("class", "confirmButton")
     confirmButton.addEventListener("click", () => {
-        buttonRemover("characterSelection");
+        clearContainerByClass("characterSelection");
         backgroundChanger("characterSelection", "combat");
         combatSetup();
         combatHandler(chosenCharacter);
@@ -131,12 +131,15 @@ function backgroundChanger(formerState, newState){
     console.log("Former background has been deleted")
 }
 
-function buttonRemover(formerState){
-    let buttonToRemove = document.getElementById(formerState);
-    while (buttonToRemove.lastChild){
-        buttonToRemove.removeChild(buttonToRemove.lastChild);
-    }
-    console.log("All buttons about " + formerState + " should be removed")
+function clearContainerByClass(className) {
+  const container = document.getElementsByClassName(className)[0];
+  if (!container) {
+    console.warn("clearContainerByClass: no element found for class:", className);
+    return;
+  }
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
 }
 
 //Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -159,8 +162,8 @@ function combatSetup(){
     chosenEnemy.introduce();
 
     let attackButton = document.createElement('button');
-    attackButton.setAttribute("id", "combat");
-    attackButton.setAttribute("class", "attackButton")
+    attackButton.setAttribute("id", "attackButton");
+    attackButton.setAttribute("class", "combatButtons")
     attackButton.addEventListener("click", () => {
         characterAttacks(chosenCharacter, chosenEnemy)
     });
@@ -168,24 +171,24 @@ function combatSetup(){
     document.getElementsByClassName("combatButtons")[0].appendChild(attackButton);   
 
     let abilityButton1 = document.createElement('button');
-    abilityButton1.setAttribute("id", "combat");
-    abilityButton1.setAttribute("class", "abilityButton")
+    abilityButton1.setAttribute("id", "abilityButton1");
+    abilityButton1.setAttribute("class", "combatButtons")
     abilityButton1.addEventListener("click", () => {
     });
     abilityButton1.innerHTML = chosenCharacter.ability1Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton1);
 
     let abilityButton2 = document.createElement('button');
-    abilityButton2.setAttribute("id", "combat");
-    abilityButton2.setAttribute("class", "abilityButton")
+    abilityButton2.setAttribute("id", "abilityButton2");
+    abilityButton2.setAttribute("class", "combatButtons")
     abilityButton2.addEventListener("click", () => {
     });
     abilityButton2.innerHTML = chosenCharacter.ability2Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton2);
 
     let runButton = document.createElement('button');
-    runButton.setAttribute("id", "combat");
-    runButton.setAttribute("class", "runButton")
+    runButton.setAttribute("id", "runButton");
+    runButton.setAttribute("class", "combatButtons")
     runButton.addEventListener("click", () => {
     });
     runButton.innerHTML = "RUN!";
@@ -229,7 +232,11 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
         if (chosenCharacter.health-playerDamage <= 0){
             backgroundChanger("combat", "gameOver")
-            buttonRemover("combat")
+            clearContainerByClass("combatButtons")
+            clearContainerByClass("healthbars")
+        }
+        else{
+            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
         }
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
@@ -237,17 +244,24 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
         if (chosenCharacter.health-playerDamage <= 0){
             backgroundChanger("combat", "gameOver")
-            buttonRemover("combat")
+            clearContainerByClass("combatButtons")
+            clearContainerByClass("healthbars")
+        }
+        else{
+            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
         }
     } else { //Player gets to go first in unforseen circumstances or if speed is equal
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
         if (chosenCharacter.health-playerDamage <= 0){
             backgroundChanger("combat", "gameOver")
-            buttonRemover("combat")
+            clearContainerByClass("combatButtons")
+            clearContainerByClass("healthbars")
+        }
+        else{
+            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
         }
     }
-    healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
 }
 
 
