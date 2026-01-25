@@ -89,8 +89,8 @@ function selectCharacter(character) {
 function backgroundStarter(newState){
     let currentBackground = document.createElement('img');
     currentBackground.setAttribute("src", "styles/assets/backgrounds/" + newState + ".jpg")
-    currentBackground.setAttribute("id", "background");
-    currentBackground.setAttribute("class", newState);
+    currentBackground.setAttribute("id", newState);
+    currentBackground.setAttribute("class", "background");
     currentBackground.setAttribute("alt", "Afbeelding niet gevonden")
     document.getElementsByClassName("backgroundLocation")[0].appendChild(currentBackground);
     console.log("New background has been created");
@@ -124,7 +124,7 @@ function buttonStarter(newState){
 
 function backgroundChanger(formerState, newState){
     backgroundStarter(newState)
-    let backgroundToRemove = document.getElementsByClassName(formerState)[0];
+    let backgroundToRemove = document.getElementById(formerState);
     backgroundToRemove.remove();
     console.log("Former background has been deleted")
 }
