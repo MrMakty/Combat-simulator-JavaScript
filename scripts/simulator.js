@@ -110,7 +110,6 @@ function buttonStarter(newState){
         document.getElementsByClassName(newState)[0].appendChild(characterButton);
         
     });
-
     let confirmButton = document.createElement('button');
     confirmButton.setAttribute("id", "confirmation");
     confirmButton.setAttribute("class", "confirmButton")
@@ -125,7 +124,7 @@ function buttonStarter(newState){
 
 function backgroundChanger(formerState, newState){
     backgroundStarter(newState)
-    let backgroundToRemove = document.getElementById(formerState);
+    let backgroundToRemove = document.getElementsByClassName(formerState)[0];
     backgroundToRemove.remove();
     console.log("Former background has been deleted")
 }
