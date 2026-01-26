@@ -109,7 +109,7 @@ function buttonStarter(newState){
         });
         characterButton.innerHTML = character.name;
         document.getElementsByClassName("selectionButtons")[0].appendChild(characterButton);
-        imageLoader(character.classType, "characterPicture", character.classType, "character")
+        imageLoader(character.classType, "characterPictures", character.classType, "sprite")
     });
     let confirmButton = document.createElement('button');
     confirmButton.setAttribute("id", "confirmation");
@@ -147,6 +147,20 @@ function combatSetup(){
     chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
     chosenEnemy.introduce();
 
+    let healthbarPlayer = document.createElement('data');
+    healthbarPlayer.setAttribute("id", "playerHealth");
+    healthbarPlayer.setAttribute("class", "healthbar");
+    healthbarPlayer.innerHTML = chosenCharacter.health +"/"+ chosenCharacter.maxHealth;
+    document.getElementsByClassName("healthbars")[0].appendChild(healthbarPlayer);
+    imageLoader(chosenCharacter.classType, "characterPicturesCombat", chosenCharacter.classType, "sprite")
+
+    let healthbarEnemy = document.createElement('data');
+    healthbarEnemy.setAttribute("id", "enemyHealth");
+    healthbarEnemy.setAttribute("class", "healthbar");
+    healthbarEnemy.innerHTML = chosenEnemy.health +"/"+ chosenEnemy.maxHealth;
+    document.getElementsByClassName("healthbars")[0].appendChild(healthbarEnemy);
+    imageLoader(chosenEnemy.classType, "characterPicturesCombat", chosenEnemy.classType, "sprite")
+
     let attackButton = document.createElement('button');
     attackButton.setAttribute("class", "combatButtons, attackButton")
     attackButton.addEventListener("click", () => {
@@ -176,17 +190,7 @@ function combatSetup(){
     runButton.innerHTML = "RUN!";
     document.getElementsByClassName("combatButtons")[0].appendChild(runButton);
 
-    let healthbarPlayer = document.createElement('data');
-    healthbarPlayer.setAttribute("id", "playerHealth");
-    healthbarPlayer.setAttribute("class", "healthbar");
-    healthbarPlayer.innerHTML = chosenCharacter.health +"/"+ chosenCharacter.maxHealth;
-    document.getElementsByClassName("healthbars")[0].appendChild(healthbarPlayer);
 
-    let healthbarEnemy = document.createElement('data');
-    healthbarEnemy.setAttribute("id", "enemyHealth");
-    healthbarEnemy.setAttribute("class", "healthbar");
-    healthbarEnemy.innerHTML = chosenEnemy.health +"/"+ chosenEnemy.maxHealth;
-    document.getElementsByClassName("healthbars")[0].appendChild(healthbarEnemy);
 }
 
 function healthbarDisplayer(chosenEnemy, chosenCharacter){
