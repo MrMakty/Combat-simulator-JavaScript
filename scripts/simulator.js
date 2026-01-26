@@ -49,44 +49,34 @@ class StatusEffect{
     }
 }
 
-//Buttons and their calls
-const attackButton = document.getElementById("attackButton");
-const abilityButton1 = document.getElementById("abilityButton1");
-const abilityButton2 = document.getElementById("abilityButton2");
-const runButton = document.getElementById("runButton");
-
-
-//Button listeners
-// attackButton.addEventListener("click", () => {
-//   console.log("Attack clicked!");
-//   characterAttacks(chosenCharacter, chosenEnemy);
-// });
-
-// abilityButton1.addEventListener("click", () => {
-//   console.log("Ability clicked!");
-// });
-
-// abilityButton2.addEventListener("click", () => {
-//   console.log("Ability clicked!");
-// });
-
-// runButton.addEventListener("click", () => {
-//   console.log("Run clicked!");
-// });
-
-function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
-    return Math.random() * (max - min) + min;
-}
-
 // Global variables
 let chosenCharacter = null;
 let chosenEnemy = null;
 
-function selectCharacter(character) {
-    chosenCharacter = character; 
-    console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
+//General functions needed by the script
+function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
+    return Math.random() * (max - min) + min;
 }
 
+function backgroundChanger(formerState, newState){
+    backgroundStarter(newState)
+    let backgroundToRemove = document.getElementById(formerState);
+    backgroundToRemove.remove();
+    console.log("Former background has been deleted")
+}
+
+function clearContainerByClass(className) {
+  const container = document.getElementsByClassName(className)[0];
+  if (!container) {
+    console.warn("clearContainerByClass: no element found for class:", className);
+    return;
+  }
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+}
+
+//Functions needed to start the game
 function backgroundStarter(newState){
     let currentBackground = document.createElement('img');
     currentBackground.setAttribute("src", "styles/assets/backgrounds/" + newState + ".jpg")
@@ -124,22 +114,9 @@ function buttonStarter(newState){
     document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
 }
 
-function backgroundChanger(formerState, newState){
-    backgroundStarter(newState)
-    let backgroundToRemove = document.getElementById(formerState);
-    backgroundToRemove.remove();
-    console.log("Former background has been deleted")
-}
-
-function clearContainerByClass(className) {
-  const container = document.getElementsByClassName(className)[0];
-  if (!container) {
-    console.warn("clearContainerByClass: no element found for class:", className);
-    return;
-  }
-  while (container.firstChild) {
-    container.removeChild(container.firstChild);
-  }
+function selectCharacter(character) {
+    chosenCharacter = character; 
+    console.log("Chosen character is now:", chosenCharacter.name, chosenCharacter.classType);
 }
 
 //Make player (meaning stats and abilitites). Player will be able to choose by clicking on a character but for now only 1 possible character to play with
@@ -155,7 +132,7 @@ function characterSelector(){ //This variable will be removed and a json file wi
 
 characterSelector(characterList)
 
-
+//Combat related functions
 function combatSetup(){
     // Random selection of enemy goed here
     chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
@@ -211,7 +188,6 @@ function combatHandler(chosenCharacter){
     healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
 }
 
-//Constant healthbars
 function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
     chosenCharacter.health -= playerDamage;
     const playerHealthInfo = document.getElementById("playerHealth");
@@ -224,7 +200,6 @@ function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDam
     console.log("enemy health printed")
 }
 
-//Combat:
 function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
     let playerDamage = 0
     let enemyDamage = 0
@@ -263,7 +238,6 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
         }
     }
 }
-
 
 function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBuf = 0, lowRoll = -5, highRoll = 6) {
     let damage = 0;
