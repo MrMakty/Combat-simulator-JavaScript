@@ -4,6 +4,10 @@ html {
   margin: 0%;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .background {
   height: 100%;
   width: 100%;
@@ -12,10 +16,6 @@ html {
   background-size: cover;
   position: absolute;
   z-index: -5;
-}
-
-button:hover {
-  cursor: pointer;
 }
 
 .characterPictures, .selectionButtons, .confirmButton, .healthbars, .characterPicturesCombat{
