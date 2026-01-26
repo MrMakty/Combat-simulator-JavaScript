@@ -59,7 +59,7 @@ button:hover {
 .healthbarFill {
   height: 100%;
   background: green;
-  transition: width 0.2s linear
+  transition: width 0.7s linear
 }
 
 .healthbarText {
