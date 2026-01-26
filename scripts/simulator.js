@@ -76,6 +76,16 @@ function clearContainerByClass(className) {
   }
 }
 
+function imageLoader(imageName, imageContainer, imgaeId, imageClass){
+    let image = document.createElement('img');
+    image.setAttribute("src", "styles/assets/" + imageName + ".png")
+    image.setAttribute("id", imgaeId);
+    image.setAttribute("class", imageClass);
+    image.setAttribute("alt", "Afbeelding "+imageName+" niet gevonden")
+    document.getElementsByClassName(imageContainer)[0].appendChild(image);
+    console.log("New image has been created");
+}
+
 //Functions needed to start the game
 function backgroundStarter(newState){
     let currentBackground = document.createElement('img');
@@ -98,8 +108,8 @@ function buttonStarter(newState){
             character.introduce();
         });
         characterButton.innerHTML = character.name;
-        document.getElementsByClassName(newState)[0].appendChild(characterButton);
-        
+        document.getElementsByClassName("selectionButtons")[0].appendChild(characterButton);
+        imageLoader(character.classType, "characterPicture", character.classType, "character")
     });
     let confirmButton = document.createElement('button');
     confirmButton.setAttribute("id", "confirmation");
@@ -127,10 +137,9 @@ let characterList = [playerArcher, playerMage, playerWarrior]
 
 function characterSelector(){ //This variable will be removed and a json file with the characters will be implemented in this function instead
     backgroundStarter("characterSelection");
-    buttonStarter("characterSelection");
-}
+    buttonStarter("characterSelection");}
 
-characterSelector(characterList)
+characterSelector()
 
 //Combat related functions
 function combatSetup(){
