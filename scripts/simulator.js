@@ -52,10 +52,17 @@ class StatusEffect{
 // Global variables
 let chosenCharacter = null;
 let chosenEnemy = null;
+let enemiesList = [];
 
 //General functions needed by the script
 function getRandomInt(min, max) { //random integer generator with a variable maximum and minimum
     return Math.random() * (max - min) + min;
+}
+
+async function loadEnemies() {
+    const response = await fetch("data/enemies.json");
+    enemiesList = await response.json();
+    console.log("Enemies loaded:", enemiesList);
 }
 
 function backgroundChanger(formerState, newState){
@@ -139,13 +146,39 @@ function characterSelector(){ //This variable will be removed and a json file wi
     backgroundStarter("characterSelection");
     buttonStarter("characterSelection");}
 
-characterSelector()
+loadEnemies();
+characterSelector();
 
 //Combat related functions
-function combatSetup(){
-    // Random selection of enemy goes here once I have the rest under control
-    chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
+function getRandomEnemyData() {
+  const index = Math.floor(Math.random() * enemiesList.length);
+  return enemiesList[index];
+}
+
+function enemyDataToCharacter(enemyData) {
+  return new Character(
+    enemyData.Name,
+    enemyData.ClassType,
+    enemyData.Health,
+    enemyData.MaxHealth,
+    enemyData.Armor,
+    enemyData.Strength,
+    enemyData.Speed,
+    enemyData.Ability_1,
+    enemyData.Ability_2
+  );
+}
+
+
+async function combatSetup(){
+      if (enemiesList.length === 0) {
+    await loadEnemies();
+    }
+
+    const enemyData = getRandomEnemyData();
+    chosenEnemy = enemyDataToCharacter(enemyData);
     chosenEnemy.introduce();
+
 
     const healthbarsContainer = document.getElementsByClassName("healthbars")[0];
     healthbarsContainer.appendChild(createHealthBar("playerHealth"));
