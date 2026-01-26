@@ -197,23 +197,26 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
         if (healthCheck(chosenCharacter.health)){
             backgroundChanger("combat", "gameOver")
         }
-        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
-        chosenEnemy.health = chosenEnemy.health - enemyDamage;
-        if (healthCheck(chosenEnemy.health)){
-            backgroundChanger("combat", "victory")
+        else{
+            enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+            chosenEnemy.health = chosenEnemy.health - enemyDamage;
+            if (healthCheck(chosenEnemy.health)){
+                backgroundChanger("combat", "victory")
+            }
         }
-
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
         chosenEnemy.health = chosenEnemy.health - enemyDamage;
         if (healthCheck(chosenEnemy.health)){
             backgroundChanger("combat", "victory")
         }
-
-        playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        chosenCharacter.health = chosenCharacter.health - playerDamage;
-        if (healthCheck(chosenCharacter.health)){
-            backgroundChanger("combat", "gameOver")
+        else
+        {
+            playerDamage = performAttack(chosenEnemy, chosenCharacter);
+            chosenCharacter.health = chosenCharacter.health - playerDamage;
+            if (healthCheck(chosenCharacter.health)){
+                backgroundChanger("combat", "gameOver")
+            }
         }
     } else { //Player gets to go first in unforseen circumstances or if speed is equal
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);        
@@ -221,11 +224,12 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
         if (healthCheck(chosenEnemy.health)){
             backgroundChanger("combat", "victory")
         }
-
-        playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        chosenCharacter.health = chosenCharacter.health - playerDamage;
-        if (healthCheck(chosenCharacter.health)){
-            backgroundChanger("combat", "gameOver")
+        else{
+            playerDamage = performAttack(chosenEnemy, chosenCharacter);
+            chosenCharacter.health = chosenCharacter.health - playerDamage;
+            if (healthCheck(chosenCharacter.health)){
+                backgroundChanger("combat", "gameOver")
+            }
         }
     }
 }
@@ -245,7 +249,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             else {
                 damage = attacker.strength * 2;   
             }
-            console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+" !\n"+
+            console.log("\n"+attacker.name+" critically hits "+defender.name+" the "+defender.classType+"!\n"+
                 defender.name+" takes "+damage+" points of damage!");
         }
     else //if not a miss or a crit this code runs
@@ -263,7 +267,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
                             defender.name+" blocked all the damage!");
             }
             else {
-            console.log("\n"+attacker.name+" hits "+defender.name+" the "+defender.classType+" !\n"+
+            console.log("\n"+attacker.name+" hits "+defender.name+" the "+defender.classType+"!\n"+
                         defender.name+" takes "+damage+" points of damage!");            
             }
         }
