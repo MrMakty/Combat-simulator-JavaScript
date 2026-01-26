@@ -108,7 +108,7 @@ function buttonStarter(newState){
         clearContainerByClass("characterSelection");
         backgroundChanger("characterSelection", "combat");
         combatSetup();
-        combatHandler(chosenCharacter);
+        healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
     });
     confirmButton.innerHTML = "CONFIRM";
     document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
@@ -184,20 +184,12 @@ function combatSetup(){
     document.getElementsByClassName("healthbars")[0].appendChild(healthbarEnemy);
 }
 
-function combatHandler(chosenCharacter){
-    healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
-}
-
-function healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage){
-    chosenCharacter.health -= playerDamage;
-    const playerHealthInfo = document.getElementById("playerHealth");
+function healthbarDisplayer(chosenEnemy, chosenCharacter){
+    let playerHealthInfo = document.getElementById("playerHealth");
     playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
-    console.log("player health printed")
     
-    chosenEnemy.health -= enemyDamage;
-    const enemyHealthInfo = document.getElementById("enemyHealth");
+    let enemyHealthInfo = document.getElementById("enemyHealth");
     enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
-    console.log("enemy health printed")
 }
 
 function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
@@ -205,10 +197,8 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
     let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        if (chosenCharacter.health-playerDamage <= 0){
+        if (healthCheck(chosenCharacter.health)){
             backgroundChanger("combat", "gameOver")
-            clearContainerByClass("combatButtons")
-            clearContainerByClass("healthbars")
         }
         else{
             healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
@@ -217,10 +207,8 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
     } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        if (chosenCharacter.health-playerDamage <= 0){
+        if (healthCheck(chosenCharacter.health)){
             backgroundChanger("combat", "gameOver")
-            clearContainerByClass("combatButtons")
-            clearContainerByClass("healthbars")
         }
         else{
             healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
@@ -228,10 +216,11 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
     } else { //Player gets to go first in unforseen circumstances or if speed is equal
         enemyDamage = performAttack(chosenCharacter, chosenEnemy);
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        if (chosenCharacter.health-playerDamage <= 0){
+        console.log(playerDamage)
+        console.log(chosenCharacter.health)
+        chosenCharacter.health = chosenCharacter.health - playerDamage;
+        if (healthCheck(chosenCharacter.health)){
             backgroundChanger("combat", "gameOver")
-            clearContainerByClass("combatButtons")
-            clearContainerByClass("healthbars")
         }
         else{
             healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
@@ -285,6 +274,16 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
     }
 }
 
+function healthCheck(characterHealth){
+    if (characterHealth <= 0){
+            clearContainerByClass("combatButtons")
+            clearContainerByClass("healthbars")
+        return true
+    }
+    else {
+        return false
+    }
+}
 
 //Variables needed:
 //Player: Name, Type[Health, MaxHealth, Armor, Strength, Speed, Ability1, Ability2]
