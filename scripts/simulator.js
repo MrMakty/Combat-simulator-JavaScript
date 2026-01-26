@@ -108,7 +108,7 @@ function buttonStarter(newState){
         clearContainerByClass("characterSelection");
         backgroundChanger("characterSelection", "combat");
         combatSetup();
-        healthbarDisplayer(chosenEnemy, chosenCharacter, 0, 0)
+        healthbarDisplayer(chosenEnemy, chosenCharacter)
     });
     confirmButton.innerHTML = "CONFIRM";
     document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
@@ -139,8 +139,7 @@ function combatSetup(){
     chosenEnemy.introduce();
 
     let attackButton = document.createElement('button');
-    attackButton.setAttribute("id", "attackButton");
-    attackButton.setAttribute("class", "combatButtons")
+    attackButton.setAttribute("class", "combatButtons, attackButton")
     attackButton.addEventListener("click", () => {
         characterAttacks(chosenCharacter, chosenEnemy)
     });
@@ -148,24 +147,21 @@ function combatSetup(){
     document.getElementsByClassName("combatButtons")[0].appendChild(attackButton);   
 
     let abilityButton1 = document.createElement('button');
-    abilityButton1.setAttribute("id", "abilityButton1");
-    abilityButton1.setAttribute("class", "combatButtons")
+    abilityButton1.setAttribute("class", "combatButtons, abilityButton")
     abilityButton1.addEventListener("click", () => {
     });
     abilityButton1.innerHTML = chosenCharacter.ability1Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton1);
 
     let abilityButton2 = document.createElement('button');
-    abilityButton2.setAttribute("id", "abilityButton2");
-    abilityButton2.setAttribute("class", "combatButtons")
+    abilityButton1.setAttribute("class", "combatButtons, abilityButton")
     abilityButton2.addEventListener("click", () => {
     });
     abilityButton2.innerHTML = chosenCharacter.ability2Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton2);
 
     let runButton = document.createElement('button');
-    runButton.setAttribute("id", "runButton");
-    runButton.setAttribute("class", "combatButtons")
+    runButton.setAttribute("class", "combatButtons, runButton")
     runButton.addEventListener("click", () => {
     });
     runButton.innerHTML = "RUN!";
@@ -197,33 +193,39 @@ function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act 
     let enemyDamage = 0
     if (chosenCharacter.speed < chosenEnemy.speed){ //Enemy is faster and attacks first
         playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        if (healthCheck(chosenCharacter.health)){
-            backgroundChanger("combat", "gameOver")
-        }
-        else{
-            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
-        }
-        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
-    } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
-        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
-        playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        if (healthCheck(chosenCharacter.health)){
-            backgroundChanger("combat", "gameOver")
-        }
-        else{
-            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
-        }
-    } else { //Player gets to go first in unforseen circumstances or if speed is equal
-        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
-        playerDamage = performAttack(chosenEnemy, chosenCharacter);
-        console.log(playerDamage)
-        console.log(chosenCharacter.health)
         chosenCharacter.health = chosenCharacter.health - playerDamage;
         if (healthCheck(chosenCharacter.health)){
             backgroundChanger("combat", "gameOver")
         }
-        else{
-            healthbarDisplayer(chosenEnemy, chosenCharacter, enemyDamage, playerDamage)
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+        chosenEnemy.health = chosenEnemy.health - enemyDamage;
+        if (healthCheck(chosenEnemy.health)){
+            backgroundChanger("combat", "victory")
+        }
+
+    } else if (chosenCharacter.speed > chosenEnemy.speed) {//Player is faster and attacks first
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);
+        chosenEnemy.health = chosenEnemy.health - enemyDamage;
+        if (healthCheck(chosenEnemy.health)){
+            backgroundChanger("combat", "victory")
+        }
+
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
+        chosenCharacter.health = chosenCharacter.health - playerDamage;
+        if (healthCheck(chosenCharacter.health)){
+            backgroundChanger("combat", "gameOver")
+        }
+    } else { //Player gets to go first in unforseen circumstances or if speed is equal
+        enemyDamage = performAttack(chosenCharacter, chosenEnemy);        
+        chosenEnemy.health = chosenEnemy.health - enemyDamage;
+        if (healthCheck(chosenEnemy.health)){
+            backgroundChanger("combat", "victory")
+        }
+
+        playerDamage = performAttack(chosenEnemy, chosenCharacter);
+        chosenCharacter.health = chosenCharacter.health - playerDamage;
+        if (healthCheck(chosenCharacter.health)){
+            backgroundChanger("combat", "gameOver")
         }
     }
 }
@@ -266,7 +268,7 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
             }
         }
     if (damage > 0){
-        return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got bloacked, shouldn't deal status conditions
+        return damage; //This is here to later check if an attack did damage or not. Attacks that don't deal damage because they missed or got blocked, shouldn't deal status conditions
     }
     else
     {
@@ -281,6 +283,7 @@ function healthCheck(characterHealth){
         return true
     }
     else {
+            healthbarDisplayer(chosenEnemy, chosenCharacter)
         return false
     }
 }
