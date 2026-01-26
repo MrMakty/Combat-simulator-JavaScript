@@ -143,22 +143,14 @@ characterSelector()
 
 //Combat related functions
 function combatSetup(){
-    // Random selection of enemy goed here
+    // Random selection of enemy goes here once I have the rest under control
     chosenEnemy = new Character("Goob", "goblin", 80, 80, 15, 15, 6, "mud_throw", "enemy_brace_shield")
     chosenEnemy.introduce();
 
-    let healthbarPlayer = document.createElement('data');
-    healthbarPlayer.setAttribute("id", "playerHealth");
-    healthbarPlayer.setAttribute("class", "healthbar");
-    healthbarPlayer.innerHTML = chosenCharacter.health +"/"+ chosenCharacter.maxHealth;
-    document.getElementsByClassName("healthbars")[0].appendChild(healthbarPlayer);
+    const healthbarsContainer = document.getElementsByClassName("healthbars")[0];
+    healthbarsContainer.appendChild(createHealthBar("playerHealth"));
     imageLoader(chosenCharacter.classType, "characterPicturesCombat", chosenCharacter.classType, "sprite")
-
-    let healthbarEnemy = document.createElement('data');
-    healthbarEnemy.setAttribute("id", "enemyHealth");
-    healthbarEnemy.setAttribute("class", "healthbar");
-    healthbarEnemy.innerHTML = chosenEnemy.health +"/"+ chosenEnemy.maxHealth;
-    document.getElementsByClassName("healthbars")[0].appendChild(healthbarEnemy);
+    healthbarsContainer.appendChild(createHealthBar("enemyHealth"));
     imageLoader(chosenEnemy.classType, "characterPicturesCombat", chosenEnemy.classType, "sprite")
 
     let attackButton = document.createElement('button');
@@ -177,7 +169,7 @@ function combatSetup(){
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton1);
 
     let abilityButton2 = document.createElement('button');
-    abilityButton1.setAttribute("class", "combatButton, abilityButton")
+    abilityButton2.setAttribute("class", "combatButton, abilityButton")
     abilityButton2.addEventListener("click", () => {
     });
     abilityButton2.innerHTML = chosenCharacter.ability2Id;
@@ -191,13 +183,48 @@ function combatSetup(){
     document.getElementsByClassName("combatButtons")[0].appendChild(runButton);
 }
 
-function healthbarDisplayer(chosenEnemy, chosenCharacter){
-    let playerHealthInfo = document.getElementById("playerHealth");
-    playerHealthInfo.textContent = chosenCharacter.health + "/" + chosenCharacter.maxHealth;
-    
-    let enemyHealthInfo = document.getElementById("enemyHealth");
-    enemyHealthInfo.textContent = chosenEnemy.health + "/" + chosenEnemy.maxHealth;
+function healthbarDisplayer(chosenEnemy, chosenCharacter) {
+  const playerText = document.getElementById("playerHealthText");
+  const playerFill = document.getElementById("playerHealthFill");
+
+  playerText.textContent = `${chosenCharacter.health}/${chosenCharacter.maxHealth}`;
+
+  const playerPct = Math.max(0, Math.min(1, chosenCharacter.health / chosenCharacter.maxHealth));
+  playerFill.style.width = (playerPct * 100) + "%";
+
+  const enemyText = document.getElementById("enemyHealthText");
+  const enemyFill = document.getElementById("enemyHealthFill");
+
+  enemyText.textContent = `${chosenEnemy.health}/${chosenEnemy.maxHealth}`;
+
+  const enemyPct = Math.max(0, Math.min(1, chosenEnemy.health / chosenEnemy.maxHealth));
+  enemyFill.style.width = (enemyPct * 100) + "%";
 }
+
+
+function createHealthBar(barIdPrefix) {
+  // Outer bar (red background)
+  const bar = document.createElement("div");
+  bar.className = "healthbar";
+  bar.id = `${barIdPrefix}Bar`;
+
+  // Inner fill (green part that shrinks)
+  const fill = document.createElement("div");
+  fill.className = "healthbarFill";
+  fill.id = `${barIdPrefix}Fill`;
+
+  // Text overlay (your numbers)
+  const text = document.createElement("div");
+  text.className = "healthbarText";
+  text.id = `${barIdPrefix}Text`;
+  text.textContent = "0/0"; // placeholder, will be updated
+
+  bar.appendChild(fill);
+  bar.appendChild(text);
+
+  return bar;
+}
+
 
 function characterAttacks(chosenCharacter, chosenEnemy){ //Decides who will act first in combat. Will remove the performAttack calls later as they will be put into a button click
     let playerDamage = 0
