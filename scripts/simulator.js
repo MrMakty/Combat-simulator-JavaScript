@@ -162,7 +162,7 @@ function combatSetup(){
     imageLoader(chosenEnemy.classType, "characterPicturesCombat", chosenEnemy.classType, "sprite")
 
     let attackButton = document.createElement('button');
-    attackButton.setAttribute("class", "combatButtons, attackButton")
+    attackButton.setAttribute("class", "combatButton, attackButton")
     attackButton.addEventListener("click", () => {
         characterAttacks(chosenCharacter, chosenEnemy)
     });
@@ -170,27 +170,25 @@ function combatSetup(){
     document.getElementsByClassName("combatButtons")[0].appendChild(attackButton);   
 
     let abilityButton1 = document.createElement('button');
-    abilityButton1.setAttribute("class", "combatButtons, abilityButton")
+    abilityButton1.setAttribute("class", "combatButton, abilityButton")
     abilityButton1.addEventListener("click", () => {
     });
     abilityButton1.innerHTML = chosenCharacter.ability1Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton1);
 
     let abilityButton2 = document.createElement('button');
-    abilityButton1.setAttribute("class", "combatButtons, abilityButton")
+    abilityButton1.setAttribute("class", "combatButton, abilityButton")
     abilityButton2.addEventListener("click", () => {
     });
     abilityButton2.innerHTML = chosenCharacter.ability2Id;
     document.getElementsByClassName("combatButtons")[0].appendChild(abilityButton2);
 
     let runButton = document.createElement('button');
-    runButton.setAttribute("class", "combatButtons, runButton")
+    runButton.setAttribute("class", "combatButton, runButton")
     runButton.addEventListener("click", () => {
     });
     runButton.innerHTML = "RUN!";
     document.getElementsByClassName("combatButtons")[0].appendChild(runButton);
-
-
 }
 
 function healthbarDisplayer(chosenEnemy, chosenCharacter){
@@ -295,8 +293,9 @@ function performAttack(attacker, defender, specialDamage = 0, critBuf = 0, hitBu
 
 function healthCheck(characterHealth){
     if (characterHealth <= 0){
-            clearContainerByClass("combatButtons")
-            clearContainerByClass("healthbars")
+        clearContainerByClass("healthbars")
+        clearContainerByClass("characterPicturesCombat")
+        clearContainerByClass("combatButtons")
         return true
     }
     else {

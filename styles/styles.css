@@ -14,28 +14,38 @@ html {
   z-index: -5;
 }
 
-.characterPictures {
+button:hover {
+  cursor: pointer;
+}
+
+.characterPictures, .selectionButtons, .confirmButton, .healthbars, .characterPicturesCombat{
   display: flex;
   justify-content: space-around;
 }
 
-.selectionButtons {
-  display: flex;
-  justify-content: space-around;
-}
-
-.sprite{
+.sprite {
   max-width: 20%;
   max-height: 20vw;
-}
-
-.confirmButton {
-  display: flex;
-  justify-content: space-around;
 }
 
 .healthbar {
   background: red;
   padding-left: 2%;
   padding-right: 2%;
+}
+
+.combatButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.combatButton {
+  background-color: aqua;
+  width: 10vw;
+}
+
+.disabledbtn {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
