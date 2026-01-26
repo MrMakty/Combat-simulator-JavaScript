@@ -179,7 +179,6 @@ async function combatSetup(){
     chosenEnemy = enemyDataToCharacter(enemyData);
     chosenEnemy.introduce();
 
-
     const healthbarsContainer = document.getElementsByClassName("healthbars")[0];
     healthbarsContainer.appendChild(createHealthBar("playerHealth"));
     imageLoader(chosenCharacter.classType, "characterPicturesCombat", chosenCharacter.classType, "sprite")
