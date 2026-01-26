@@ -113,7 +113,7 @@ function buttonStarter(newState){
     });
     let confirmButton = document.createElement('button');
     confirmButton.setAttribute("id", "confirmation");
-    confirmButton.setAttribute("class", "confirmButton")
+    confirmButton.setAttribute("class", "button")
     confirmButton.addEventListener("click", () => {
         clearContainerByClass("characterSelection");
         backgroundChanger("characterSelection", "combat");
@@ -121,7 +121,7 @@ function buttonStarter(newState){
         healthbarDisplayer(chosenEnemy, chosenCharacter)
     });
     confirmButton.innerHTML = "CONFIRM";
-    document.getElementsByClassName("characterSelection")[0].appendChild(confirmButton);
+    document.getElementsByClassName("confirmButton")[0].appendChild(confirmButton);
 }
 
 function selectCharacter(character) {

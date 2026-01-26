@@ -14,12 +14,28 @@ html {
   z-index: -5;
 }
 
-.healthbar {
-  background: red;
-  padding-left: 2%;
-  padding-right: 2%;
+.characterPictures {
+  display: flex;
+  justify-content: space-around;
+}
+
+.selectionButtons {
+  display: flex;
+  justify-content: space-around;
 }
 
 .sprite{
   max-width: 20%;
+  max-height: 20vw;
+}
+
+.confirmButton {
+  display: flex;
+  justify-content: space-around;
+}
+
+.healthbar {
+  background: red;
+  padding-left: 2%;
+  padding-right: 2%;
 }
