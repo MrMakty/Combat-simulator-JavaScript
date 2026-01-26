@@ -83,7 +83,7 @@ function imageLoader(imageName, imageContainer, imgaeId, imageClass){
     image.setAttribute("class", imageClass);
     image.setAttribute("alt", "Afbeelding "+imageName+" niet gevonden")
     document.getElementsByClassName(imageContainer)[0].appendChild(image);
-    console.log("New image has been created");
+    console.log("New image "+imageName+" has been created");
 }
 
 //Functions needed to start the game
