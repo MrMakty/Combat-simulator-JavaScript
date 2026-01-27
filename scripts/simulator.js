@@ -60,7 +60,8 @@ function getRandomInt(min, max) { //random integer generator with a variable max
 }
 
 async function loadEnemies() {
-    const response = await fetch("data/enemies.json");
+    // const response = await fetch("data/enemies.json");
+    const response = await fetch("data/testenemy.json");
     enemiesList = await response.json();
     console.log("Enemies loaded:", enemiesList);
 }
